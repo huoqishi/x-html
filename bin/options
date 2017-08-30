@@ -1,0 +1,21 @@
+/**
+ * 各种参数都存储于options对象中
+ * @type {Object}
+ */
+const options = {
+  args: process.argv.slice(2),
+  entry: '' , // 入口文件, 可以是一个字符串，可以是一个数组，也可以是一个对象(是对象时，对象的key将作为打包后的文件名)
+
+  // path 和 filename的值将会使用path.join进行合并
+  output: {
+    filepath: '',  // 没有值时，则使用path与filename合并的值
+    path: '',   // 出口文件的存储路径
+    filename: '' // 出口文件的文件名, [name] , [ext]
+  },
+  cwd: process.cwd(), // 终端路径
+  exactCSS: false , // 是否分离出css到单独的文件中
+  bundleAllCSS: false, // 如果为true，则将所有css合并到一个文件中, 否则一个入口生成一个css
+  config: '', // 指定配置文件的路径
+}
+
+module.exports = options

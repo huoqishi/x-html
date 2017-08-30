@@ -1,0 +1,57 @@
+const path = require('path')
+const fs = require('fs')
+const options = require('./options')
+
+/**
+ * 验证终端参数是否正确, 不正确时，给出相应的提示
+ * 
+ * @return {boolean} 参数验证通过时，return true
+ */
+
+exports.validArgs = () => {
+  console.log(options.args)
+  // 终端参数数量为0时,或者有配置文件时,将会读取配置文件中配置
+  if (options.args.length === 0) {
+    console.log('we will read options from config files')
+    return  false
+  }
+
+  // 有两个参数的情况下, 一个是入口文件路径，一个出口文件保存路径
+  if (options.args.length === 2) {
+    const tmpEntry = path.join(options.cwd, options.args[0])  // 入口文件路径
+    const tmpFilePath = path.join(options.cwd, options.args[1]) // 出口文件路径
+    const dirFilePath = path.dirname(tmpFilePath) // 出口文件存储目录
+    // 判断入口文件是否存在 , 判断出口文件夹是否存在
+    const hasEntry = fs.existsSync(tmpEntry)
+    const hasFilePath = fs.existsSync(dirFilePath)
+    if (!hasEntry) {
+      console.log(`${tmpEntry} is not find`)
+      return false
+    }
+    if (!hasFilePath) {
+      console.log(`${hasFilePath} is not find`)
+      return false
+    }
+
+    // 判断入口文件是不是文件， 判断出口文件夹是不是文件夹
+    const statusEntry = fs.statSync(tmpEntry)
+    const statusFilePath = fs.statSync(dirFilePath)
+    if (!statusEntry.isFile()) {
+      console.log(`${tmpEntry}  is not a file, You need to specify a file that already exists the entry file`)
+      return false
+    }
+    if (!statusFilePath.isDirectory()) {
+      console.log(`${dirFilePath}  is not a directory， You need to specify a file that already exists the output folder`)
+      return false
+    }
+
+    options.entry = tmpEntry
+    options.output.filepath = tmpFilePath
+
+  }
+  return true
+}
+
+// function _terminalTwo (options) {
+//    const entry = options.
+// }

@@ -1,0 +1,21 @@
+{
+  "name": "x-html",
+  "version": "0.0.1",
+  "description": "a component-base HTML development tools",
+  "bin": {
+    "x-html": "bin/x-html"
+  },
+  "main": "index.js",
+  "scripts": {
+  },
+  "keywords": [
+    "html",
+    "component",
+    "pages"
+  ],
+  "author": "huoqishi",
+  "license": "ISC",
+  "dependencies": {
+    "acorn": "^5.1.1"
+  }
+}
