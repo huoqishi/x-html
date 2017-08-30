@@ -6,8 +6,7 @@
     "x-html": "bin/x-html"
   },
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [
     "html",
     "component",
@@ -17,5 +16,13 @@
   "license": "ISC",
   "dependencies": {
     "acorn": "^5.1.1"
+  },
+  "directories": {
+    "example": "example"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "f"
   }
 }
