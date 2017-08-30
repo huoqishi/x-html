@@ -90,7 +90,7 @@ $ x-html ./index.html  ./dist/index.html
 
   ul {
     background: #190E08;
-  }
+  }d
 
   </style>
 </head>
@@ -111,3 +111,7 @@ $ x-html ./index.html  ./dist/index.html
 </html>
 
 ```
+
+## License
+
+[MIT](LICENSE) &copy; [火骑士空空]()

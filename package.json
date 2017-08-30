@@ -13,7 +13,7 @@
     "pages"
   ],
   "author": "huoqishi",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "acorn": "^5.1.1"
   },
