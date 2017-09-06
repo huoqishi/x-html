@@ -1,6 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 const options = require('./options')
+const configHandler = require('./configHandler')
 
 /**
  * 验证终端参数是否正确, 不正确时，给出相应的提示
@@ -13,7 +14,9 @@ exports.validArgs = () => {
   // 终端参数数量为0时,或者有配置文件时,将会读取配置文件中配置
   if (options.args.length === 0) {
     console.log('we will read options from config files')
-    return  false
+    const result = configHandler.initConfig()
+    if (!result) {return false}
+    return  true
   }
 
   // 有两个参数的情况下, 一个是入口文件路径，一个出口文件保存路径
@@ -21,9 +24,11 @@ exports.validArgs = () => {
     const tmpEntry = path.join(options.cwd, options.args[0])  // 入口文件路径
     const tmpFilePath = path.join(options.cwd, options.args[1]) // 出口文件路径
     const dirFilePath = path.dirname(tmpFilePath) // 出口文件存储目录
+
     // 判断入口文件是否存在 , 判断出口文件夹是否存在
     const hasEntry = fs.existsSync(tmpEntry)
     const hasFilePath = fs.existsSync(dirFilePath)
+
     if (!hasEntry) {
       console.log(`${tmpEntry} is not find`)
       return false
@@ -49,6 +54,9 @@ exports.validArgs = () => {
     options.output.filepath = tmpFilePath
 
   }
+  // if (options.args.length === 1) {
+
+  // }
   return true
 }
 

@@ -21,8 +21,32 @@ const walk = require('acorn/dist/walk')
  * @return {undefined}
  */
 exports.start = () => {
-  console.log(options)
-  complie(options.entry)
+  _disEntry(options)
+  // complie(options.entry)
+}
+
+/**
+ * 区分entry不同的值类型，做出相应的处理
+ * @return {[type]} [description]
+ */
+function _disEntry (options) {
+    console.log(typeof options.entry)
+   if (typeof options.entry === 'string') {
+    console.log(998)
+    // const tmpEntry = path.join(options.cwd, options.entry)
+    const tmpEntry = options.entry
+    // options.output.filepath = 
+    complie(tmpEntry)
+    return
+   }
+
+   if (options.entry instanceof Array) {
+    options.entry.forEach(item => {
+      const tmpEntry = path.join(options.cwd, item)
+      complie(tmpEntry, item)
+    })
+    return
+   }
 }
 
 /*
@@ -35,8 +59,9 @@ exports.start = () => {
 /**
  * 递归编译模板, 参数验证通过后,start 需要调用此函数
  * @param  {[string]} filepath 要读取的文件的绝对路径
- */
-function complie (filepath) {
+ * @param  {[string]} originalFile entry中的入口文件路径
+ * */
+function complie (filepath, originalFile) {
   console.log(filepath)
   const parentData = getFile(filepath)
   const bodys = resolveImport(parentData)
@@ -52,7 +77,7 @@ function complie (filepath) {
       mergeFileData(parentData, fileDatas)
       return
     }
-    complie(path.join(dirname, item.value))
+    complie(path.join(dirname, item.value), originalFile)
   })
   
   console.log('---------------------------')
@@ -72,8 +97,18 @@ function complie (filepath) {
 </html>
   `
 
+  // console.log(str)
   // 后期不直接存在，要改成，根据filepath中的路径动态存储
-  fs.writeFile(options.output.filepath, str)
+  const optPath =  options.output.filepath
+  console.log('================')
+  console.log(options)
+  const status = fs.statSync(optPath)
+  console.log(status.isFile())
+  if (status.isFile()) {
+    fs.writeFile(options.output.filepath, str)
+  } else {
+    fs.writeFile(path.join(options.output.fileData, originalFile), str)
+  }
 }
 
 
