@@ -1,6 +1,6 @@
 {
   "name": "x-html",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "a component-base HTML development tools",
   "bin": {
     "x-html": "bin/x-html"
@@ -15,7 +15,8 @@
   "author": "huoqishi",
   "license": "MIT",
   "dependencies": {
-    "acorn": "^5.1.1"
+    "acorn": "^5.1.1",
+    "yargs": "^9.0.1"
   },
   "directories": {
     "example": "example"

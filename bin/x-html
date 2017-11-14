@@ -1,13 +1,11 @@
 #!/usr/bin/env node
+const argsHandler = require('../libs/argsHandler.js')
+argsHandler.start()
 
-const argHandler = require('./argHandler')
-const funHandler = require('./funHandler')
-main()
-function main () {
-  if (!argHandler.validArgs()) {
-    return
-  }
-  console.log('验证通过，开始解析')
-  // console.log(funHandler)
-  funHandler.start()
-}
+
+// css 处理
+// 1. 一个入口一个css文件
+// 2. 一个入口的css全部打包入口的html中
+// 3. 所有入口的css打入进一个html中
+
+// js 处理

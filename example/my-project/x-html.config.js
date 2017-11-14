@@ -6,6 +6,6 @@ module.exports = {
   ],
   output: {
     path: './dist',
-    filename: '',
+    filename: 'heibing.html',
   }
 }
