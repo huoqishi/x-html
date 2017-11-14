@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-const argsHandler = require('../libs/argsHandler.js')
-argsHandler.start()
+const argsH = require('../libs/argsH.js')
+argsH.start()
 
 
 // css 处理
@@ -16,3 +16,5 @@ argsHandler.start()
 // css中引入的图片问题， webpack 的 file-loader能够处理
 
 // 如果借助如webpack来处理的话
+
+// 允许通过 glob 来指定入口文件

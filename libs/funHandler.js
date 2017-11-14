@@ -132,7 +132,7 @@ function getFile (filepath) {
     style: '',
     script: ''
   }
-
+  
   // 读取模板中template,style,script标签中的内容!
   const templateResult = /<template>((\s|\S)*)<\/template>/.exec(data)
   const styleResult = /<style>((\s|\S)*)<\/style>/.exec(data)

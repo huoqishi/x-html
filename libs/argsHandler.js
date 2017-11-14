@@ -35,7 +35,6 @@ function _configFile () {
   Object.assign(config.combine, config.default, config.user)
   // 读取命令行参数，读取后保存到配置中
   // if (argv.port)
-
   funs.start()
 }
 

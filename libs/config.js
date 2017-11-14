@@ -5,10 +5,8 @@
  */
 const options = {
   // 必需要有的一些属性, 用户如果没有指定的话，则给出一些提示
-  must: {
-    entry: {
-      type: ['string', 'Array', 'Object']
-    }
+  modules: { // 缓存所有模块
+
   },
   cwd: process.cwd(), // 终端路径
   // 默认配置
@@ -25,7 +23,6 @@ const options = {
   },
   // 用户配置
   user: {
-
   },
   combine: {} // 合并用户和默认的配置
 }
