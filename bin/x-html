@@ -9,3 +9,10 @@ argsHandler.start()
 // 3. 所有入口的css打入进一个html中
 
 // js 处理
+
+
+// 需要解决的问题记录
+// template 中引入的图片资源问题!
+// css中引入的图片问题， webpack 的 file-loader能够处理
+
+// 如果借助如webpack来处理的话

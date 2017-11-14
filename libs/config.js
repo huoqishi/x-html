@@ -13,6 +13,7 @@ const options = {
   cwd: process.cwd(), // 终端路径
   // 默认配置
   default: {
+    // 如果entry是个路径而不文件夹，则该路径下所有文件都将作为入口文件
     // entry: '' , // 入口文件, 可以是一个字符串，可以是一个数组，也可以是一个对象(是对象时，对象的key将作为打包后的文件名)
     // path 和 filename的值将会使用path.join进行合并
     output: {
