@@ -4,7 +4,7 @@ A static web page development tools component
 
 # Installation
 
-```sh
+```bash
 # npm
 $ npm i -g x-html
 
@@ -15,17 +15,41 @@ $ yarn global add x-html
 
 ## CLI Usage
 
-```sh
+```bash
 # make project directory & cd into
 $ mkdir my-project && cd $_
+$ touch x-html.config.js
 ```
 
+> x-html.config.js
+
+```js
+module.exports = {
+  entry: [
+    './index.html',
+    './header/header.html'
+  ],
+  output: {
+    path: './dist',
+    filename: '[name].[ext]'
+  }
+}
+```
+
+```bash
+$ x-html
+```
+
+
+## example
 
 ```
 └── my-project ·········································· proj root
     ├── dist ············································ dist
     ├── tabBar.html ····································· component
-    └── index.html ······································ entry page
+    ├── index.html ···································· · entry page
+    └── x-html.config.js ································ x-html's config file
+
 ```
 
 > index.html
@@ -69,8 +93,8 @@ $ mkdir my-project && cd $_
 
 
 ```bash
-# run  x-html <entry> <output>
-$ x-html ./index.html  ./dist/index.html
+# run  x-html, it will read x-html.config.js and build something
+$ x-html
 ```
 
 > The results are as follows.
@@ -83,34 +107,29 @@ $ x-html ./index.html  ./dist/index.html
 <head>
   <title></title>
   <style>
-    
   h1 {
     color: red;
   }
-
   ul {
     background: #190E08;
-  }d
-
+  }
   </style>
 </head>
 <body>
-
   <div>
     <h1> I am a chinese, i love their motherland!</h1>
-    
   <ul>
     <li>foo</li>
     <li>bar</li>
     <li>xxx</li>
   </ul>
-
   </div>
-
 </body>
+
 </html>
 
 ```
+
 
 ## License
 

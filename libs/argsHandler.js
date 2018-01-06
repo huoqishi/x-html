@@ -18,10 +18,9 @@ exports.start = () => {
   _configFile()
 }
 
-
 /**
  * use config file
- * if node conf, will use default conf
+ * if no conf, will use default conf
  * @return {[type]} [description]
  */
 function _configFile () {
@@ -38,7 +37,6 @@ function _configFile () {
   funs.start()
 }
 
-
 /**
  * valid config file attribute
  * @return {[type]} [description]
@@ -46,7 +44,3 @@ function _configFile () {
 function _validConfig () {
   return true
 }
-
-
-
-

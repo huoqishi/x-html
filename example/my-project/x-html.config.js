@@ -12,6 +12,6 @@ module.exports = {
   ],
   output: {
     path: './dist',
-    filename: '[name].[ext]',
+    filename: '[name].[ext]'
   }
 }

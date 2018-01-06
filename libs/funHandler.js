@@ -78,6 +78,7 @@ function complie (filepath) {
       mergeFileData(parentData, fileDatas)
       return
     }
+    // console.log('='.repeat(100))
     complie(path.join(dirname, item.value), originalFile)
   })
 
@@ -111,7 +112,11 @@ function complie (filepath) {
     console.log('准备存储文件--')
     const filepath = path.join(config.cwd, combine.output.path, combine.output.filename)
 
-    fs.writeFile(filepath, pretty(str))
+    fs.writeFile(filepath, pretty(str), err => {
+      if (err) {
+        throw err
+      }
+    })
   }
 }
 

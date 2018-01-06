@@ -4,6 +4,7 @@ const argv = require('yargs').argv
 const config = require('./config.js')
 const tools = require('./tools.js')
 const acorn = require('acorn')
+const pretty = require('pretty') // 格式化 html
 exports.start = start
 
 const userConfName = 'x-html.config.js' // 用户配置文件名
@@ -49,7 +50,7 @@ function resolveConf () {
 /**
  * 获取入口 enrty 的类型
  */
-function getEnrty() {
+function getEnrty () {
   const entry = config.user.entry
   const entryType = (typeof entry)
   if (entryType === 'string') {
@@ -69,14 +70,14 @@ function getEnrty() {
  */
 function handlerEntryType (entryType) {
   switch (entryType) {
-    case 'string': 
-    joinAndHandleFile(config.user.entry)
-    break
+    case 'string':
+      joinAndHandleFile(config.user.entry)
+      break
     case 'array':
-    config.user.entry.forEach(item => {
-      joinAndHandleFile(item)
-    })
-    break
+      config.user.entry.forEach(item => {
+        joinAndHandleFile(item)
+      })
+      break
     case 'object': break
   }
 }
@@ -95,16 +96,11 @@ function joinAndHandleFile (relativePath) {
  * 根据路径解析文件中的template, style, script
  */
 function handleFile (filepath, isEntry) {
-  console.log(filepath, isEntry)
-  const fileData =  parseFile(filepath, isEntry)
+  const fileData = parseFile(filepath, isEntry)
   replaceBody(fileData)
-  const f = replaceBody(fileData)
-  console.log("f:",f)
-  console.log(fileData)
   let outPath
   outPath = getOutPath(filepath)
-  fs.writeFile(outPath,
-`
+  const outHtml = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -117,15 +113,18 @@ ${fileData.style}
 ${fileData.body}
 </body>
 </html>
-`)
+`
+  fs.writeFile(outPath, pretty(outHtml), err => {
+    if (err) {
+      throw err
+    }
+  })
 }
 
 /**
  * 替换 fileData.body中的模块
  */
 function replaceBody (fileData) {
-  console.log('coount')
-  // console.log('fileData.filepath: ', fileData.filepath)
   const bodys = resolveImport(fileData)
   if (bodys.length === 0) {
     config.modules[fileData.filepath] = fileData
@@ -133,7 +132,7 @@ function replaceBody (fileData) {
   }
   bodys.forEach(item => {
     let module = config.modules[item.value]
-    const regStr = '<'+ item.name +'\\s*></'+ item.name +'>| <'+ item.name +'\\s*/>'
+    const regStr = '<' + item.name + '\\s*></' + item.name + '>| <' + item.name + '\\s*/>'
     const reg = new RegExp(regStr, 'ig')
     if (!module) {
       const tmpData = parseFile(item.value)
@@ -144,7 +143,6 @@ function replaceBody (fileData) {
     }
     fileData.body = fileData.body.replace(reg, module.body)
     fileData.style = fileData.style.replace(reg, module.style)
-
   })
 
   // const fileDatas = parseFiles(bodys)
@@ -199,7 +197,7 @@ function parseFile (filepath, isEntry) {
     style: '',
     script: '',
     filepath: filepath,
-    isEntry: isEntry ? true : false
+    isEntry: !!isEntry
   }
   if (!tools.existsSync(filepath)) {
     const err = '文件不存在: ' + filepath
@@ -212,19 +210,19 @@ function parseFile (filepath, isEntry) {
     throw new Error('entry, 入口文件读取出错: ' + filepath)
   }
   if (fileData.isEntry) {
-      const head = /<head>((\s|\S)*)<\/head>/.exec(data)
-      fileData.head = (head instanceof Array) ? head[1] : ''
-    }
-  const template = /<template>((\s|\S)*)<\/template>/.exec(data)
-  const body = /<body>((\s|\S)*)<\/body>/.exec(data)
-  const script = /<script>((\s|\S)*)<\/script>/.exec(data)
-  const style = /<style>((\s|\S)*)<\/style>/.exec(data)
-  fileData.body = (body instanceof Array) ? body[1] : ''
-  if (!fileData.body) {
-    fileData.body = (template instanceof Array) ? template[1] : ''
+    const head = /<head>(\n|\r\n)((\s|\S)*)(\n|\r\n)<\/head>/.exec(data)
+    fileData.head = (head instanceof Array) ? head[2] : ''
   }
-  fileData.script = (script instanceof Array) ? script[1] : ''
-  fileData.style = (style instanceof Array) ? style[1] : ''
+  const template = /<template>(\n|\r\n)((\s|\S)*)(\n|\r\n)<\/template>/.exec(data)
+  const body = /<body>(\n|\r\n)((\s|\S)*)(\n|\r\n)<\/body>/.exec(data)
+  const script = /<script>(\n|\r\n)((\s|\S)*)(\n|\r\n)<\/script>/.exec(data)
+  const style = /<style>(\n|\r\n)((\s|\S)*)(\n|\r\n)<\/style>/.exec(data)
+  fileData.body = (body instanceof Array) ? body[2] : ''
+  if (!fileData.body) {
+    fileData.body = (template instanceof Array) ? template[2] : ''
+  }
+  fileData.script = (script instanceof Array) ? script[2] : ''
+  fileData.style = (style instanceof Array) ? style[2] : ''
   return fileData
 }
 
@@ -271,4 +269,3 @@ function resolveImport (fileData) {
   })
   return bodys
 }
-
