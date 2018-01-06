@@ -7,8 +7,7 @@ module.exports = {
   // entry: './index.html',
   // 后期考虑是否要改为使用glob来匹配
   entry: [
-    './index.html',
-    './header/header.html'
+    './index.html'
   ],
   output: {
     path: './dist',

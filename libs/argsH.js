@@ -138,11 +138,12 @@ function replaceBody (fileData) {
       const tmpData = parseFile(item.value)
       replaceBody(tmpData)
       fileData.body = fileData.body.replace(reg, tmpData.body)
-      fileData.style = fileData.style.replace(reg, tmpData.style)
+      // fileData.style = fileData.style.replace(reg, tmpData.style)
+      fileData.style += tmpData.style
       return
     }
-    fileData.body = fileData.body.replace(reg, module.body)
-    fileData.style = fileData.style.replace(reg, module.style)
+    fileData.body = module.body.replace(reg, module.body)
+    fileData.style += module.style
   })
 
   // const fileDatas = parseFiles(bodys)
@@ -205,7 +206,7 @@ function parseFile (filepath, isEntry) {
   }
   let data
   try {
-    data = fs.readFileSync(fileData.filepath)
+    data = fs.readFileSync(fileData.filepath, 'utf-8')
   } catch (e) {
     throw new Error('entry, 入口文件读取出错: ' + filepath)
   }
@@ -223,6 +224,7 @@ function parseFile (filepath, isEntry) {
   }
   fileData.script = (script instanceof Array) ? script[2] : ''
   fileData.style = (style instanceof Array) ? style[2] : ''
+  console.log(fileData)
   return fileData
 }
 

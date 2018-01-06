@@ -55,6 +55,10 @@ $ x-html
 > index.html
 
 ```html
+<head>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>i'am 火骑士空空</title>
+</head>
 <template>
   <div>
     <h1> I am a chinese, i love their motherland!</h1>
@@ -74,6 +78,11 @@ $ x-html
 > tabBar.html
 
 ```html
+<style>
+  ul {
+    background: #190E08;
+  }
+</style>
 <template>
   <ul>
     <li>foo</li>
@@ -82,13 +91,7 @@ $ x-html
   </ul>
 </template>
 <script>
-  
 </script>
-<style>
-  ul {
-    background: #190E08;
-  }
-</style>
 ```
 
 
@@ -101,33 +104,35 @@ $ x-html
 > dist/index.html
 
 ```html
-
 <!DOCTYPE html>
-<html>
-<head>
-  <title></title>
-  <style>
-  h1 {
-    color: red;
-  }
-  ul {
-    background: #190E08;
-  }
-  </style>
-</head>
-<body>
-  <div>
-    <h1> I am a chinese, i love their motherland!</h1>
-  <ul>
-    <li>foo</li>
-    <li>bar</li>
-    <li>xxx</li>
-  </ul>
-  </div>
-</body>
+<html lang="en">
+
+  <head>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>i'am 火骑士空空</title>
+    <style>
+      h1 {
+        color: red;
+      }
+
+      ul {
+        background: #190E08;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <h1> I am a chinese, i love their motherland!</h1>
+      <ul>
+        <li>foo</li>
+        <li>bar</li>
+        <li>xxx</li>
+      </ul>
+    </div>
+  </body>
 
 </html>
-
 ```
 
 

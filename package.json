@@ -1,6 +1,6 @@
 {
   "name": "x-html",
-  "version": "0.2.5",
+  "version": "0.2.7",
   "description": "a component-base HTML development tools",
   "bin": {
     "x-html": "bin/x-html"
