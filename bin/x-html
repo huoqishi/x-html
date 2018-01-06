@@ -2,14 +2,12 @@
 const argsH = require('../libs/argsH.js')
 argsH.start()
 
-
 // css 处理
 // 1. 一个入口一个css文件
 // 2. 一个入口的css全部打包入口的html中
 // 3. 所有入口的css打入进一个html中
 
 // js 处理
-
 
 // 需要解决的问题记录
 // template 中引入的图片资源问题!
@@ -18,3 +16,5 @@ argsH.start()
 // 如果借助如webpack来处理的话
 
 // 允许通过 glob 来指定入口文件
+
+// 最后看能否按vue服务器渲染方式走

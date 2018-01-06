@@ -6,7 +6,8 @@ const config = require('./config')
 const fs = require('fs')
 const path = require('path')
 const acorn = require('acorn')
-const walk = require('acorn/dist/walk')
+// const walk = require('acorn/dist/walk')
+const pretty = require('pretty') // 格式化 html
 
 // 命令行指定入口文件, 指定输出文件，依次加载依赖的文件，进行合并
 // const args = process.argv.splice(2)
@@ -15,11 +16,11 @@ const walk = require('acorn/dist/walk')
 // const entry = args[0]
 // const output = args[1]
 
-const {combine}  = config // 合并后的配置!
+const {combine} = config // 合并后的配置!
 
 /**
  * 整个程序启动的入口
- * 
+ *
  * @return {undefined}
  */
 exports.start = () => {
@@ -28,27 +29,24 @@ exports.start = () => {
   _disEntry()
 }
 
-
 /**
  * 区分entry不同的值类型，做出相应的处理
  * @return {[type]} [description]
  */
 function _disEntry () {
-   
-   if (typeof combine.entry === 'string') {
-      const item = combine.entry
-      const entryFile = path.join(config.cwd, item) // combined  entry path
-      complie(entryFile)
-      return
-   }
+  if (typeof combine.entry === 'string') {
+    const item = combine.entry
+    const entryFile = path.join(config.cwd, item) // combined  entry path
+    complie(entryFile)
+    return
+  }
 
-   if (combine.entry instanceof Array) {
+  if (combine.entry instanceof Array) {
     combine.entry.forEach(item => {
       const entryFile = path.join(config.cwd, item) // combined  entry path
       complie(entryFile)
     })
-    return
-   }
+  }
 }
 
 /*
@@ -82,7 +80,7 @@ function complie (filepath) {
     }
     complie(path.join(dirname, item.value), originalFile)
   })
-  
+
   console.log('---------------------------')
   console.log(parentData)
   let str = `
@@ -103,7 +101,7 @@ function complie (filepath) {
 
   // console.log('保存文件')
   // 后期不直接存在，要改成，根据filepath中的路径动态存储
-  const optPath =  path.join(config.cwd, combine.output.path)
+  const optPath = path.join(config.cwd, combine.output.path)
   console.log('================')
   console.log('optPath', optPath)
   console.log('combine', combine)
@@ -111,15 +109,15 @@ function complie (filepath) {
   console.log(status.isFile())
   if (status.isDirectory()) {
     console.log('准备存储文件--')
-    const filepath =  path.join(config.cwd, combine.output.path, combine.output.filename)
-    fs.writeFile(filepath, str)
+    const filepath = path.join(config.cwd, combine.output.path, combine.output.filename)
+
+    fs.writeFile(filepath, pretty(str))
   }
 }
 
-
 /**
  * 读取并拆分文件内容,将文件拆分为html, js(引入的html), css 三部分
- * 
+ *
  * @param {string} filepath 要读取的文件的绝对路径
  * @return {Object} fileData 文件数据 fileData => {template,style,script}
  */
@@ -132,7 +130,7 @@ function getFile (filepath) {
     style: '',
     script: ''
   }
-  
+
   // 读取模板中template,style,script标签中的内容!
   const templateResult = /<template>((\s|\S)*)<\/template>/.exec(data)
   const styleResult = /<style>((\s|\S)*)<\/style>/.exec(data)
@@ -152,7 +150,7 @@ function getFile (filepath) {
   //   if (err) {
   //     return console.error(err)
   //   }
-    
+
   // })
 }
 
@@ -172,7 +170,6 @@ function resolveImport (filedata) {
   result.body.forEach(item => {
     const name = item.specifiers[0].local.name
     let value = item.source.value
-
 
     bodys.push({name, value})
     // // 根据value读取相应的文件, 并将读取的内容替换字符串中的同名标签
@@ -203,19 +200,17 @@ function getFiles (parseBodys, dirname) {
 
 /**
  * 合并父组合文件与子级文件
- * 
+ *
  * @param  {Object} parentData 父级的文件数据对象
  * @param  {[Object]} childDatas 所有直接子级文件中的数据对象
  * @return {[Object]} parentData 与参数parentData地址相同
  */
 function mergeFileData (parentData, childDatas) {
   childDatas.forEach(item => {
-
     // const regExp = new RegExp(`(<${item.info.name}\s*\/\s*>)|(<${item.info.name}\s*></${item.info.name}>)`)
     const regExp = new RegExp('(<' + item.info.name + '\\s*\/\\s*>)|(<' + item.info.name + '\\s*></' + item.info.name + '>)')
     parentData.template = parentData.template.replace(regExp, item.template)
     parentData.style += item.style
-
   })
   return parentData
 }

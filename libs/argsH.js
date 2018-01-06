@@ -12,6 +12,7 @@ function start () {
   handlerConfig()
   resolveConf()
   const entryType = getEnrty()
+  config.entryType = entryType
   handlerEntryType(entryType)
 }
 
@@ -101,7 +102,7 @@ function handleFile (filepath, isEntry) {
   console.log("f:",f)
   console.log(fileData)
   let outPath
-  outPath = getOutPath(filePath)
+  outPath = getOutPath(filepath)
   fs.writeFile(outPath,
 `
 <!DOCTYPE html>
@@ -169,12 +170,15 @@ function replaceBody (fileData) {
  * @return {[type]} [description]
  */
 function getOutPath (filepath) {
-  if (config.user.entry instanceof Array) {
+  if (config.user.entryType === 'string') {
     return outPath = path.join(config.user.output.path, config.user.output.filename)
   }
   // 根据原路径进行相应输出!
-  const dirname = path.dirname(filepath)
-  const outputPath = path.join(config.user.cwd, dirname, path.basename(filepath))
+  const relativePath = path.relative(config.cwd, path.dirname(filepath))
+  const outputPath = path.join(config.cwd, config.user.output.path, relativePath)
+  console.log(outputPath)
+  tools.mkdirSync(outputPath)
+  return path.join(outputPath, path.basename(filepath))
 }
 
 /**

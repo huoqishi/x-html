@@ -68,7 +68,7 @@ $ mkdir my-project && cd $_
 ```
 
 
-```sh
+```bash
 # run  x-html <entry> <output>
 $ x-html ./index.html  ./dist/index.html
 ```

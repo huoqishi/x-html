@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 /**
  * 检测文件或者文件夹是否存在
  * @param  {string} path 需要检测的文件或者文件夹路径
@@ -20,13 +21,21 @@ obj.isFile = path => {
 obj.isDirectory = path => {
   obj.existsSync(path) ? fs.statSync(optPath).isDirectory() : false
 }
-obj.mkdir = path => {
-  if (!obj.existsSync(path)) {
-    obj.mkdir(path.dirname(path))
-    fs.mkdir(path, err => {
-      console.log(err)
-    })
+
+/**
+ * 新建文件夹
+ * @param  {[type]} dirpath [description]
+ * @return {[type]}         [description]
+ */
+obj.mkdirSync = dirpath => {
+  if (obj.existsSync(dirpath)) {
+    return true
+  }
+  obj.mkdirSync(path.dirname(dirpath))
+  try {
+    const f = fs.mkdirSync(dirpath)
+    return true
+  } catch (e) {
+    return false
   }
 }
-
-obj.mkdir('./xx')
