@@ -26,8 +26,7 @@ $ touch x-html.config.js
 ```js
 module.exports = {
   entry: [
-    './index.html',
-    './header/header.html'
+    './index.html'
   ],
   output: {
     path: './dist',
